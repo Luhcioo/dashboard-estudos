@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF=8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard de Estudos</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav>
+        <h1>Estudos</h1>
+        <button data-tela="dashboard">Dashboard</button>
+        <button data-tela="materias">Matérias</button>
+        <button data-tela="conteudos">Conteúdos</button>
+    </nav>
+    <main>
+
+        <section id="dashboard" class="tela">
+            <h2>Dashboard</h2>
+            <div class="cards">
+                <article class="card">
+                    <strong id="totalMaterias">0</strong>
+                    <p>Matérias</p>
+                </article>
+
+                <article class="card">
+                    <strong id="totalConteudos">0</strong>
+                    <p>Conteúdos</p>
+                </article>
+
+                <article class="card">
+                    <strong id="totalConcluidos">0</strong>
+                    <p>Concluídos</p>
+                </article>
+
+                <article class="card">
+                    <strong id="tempoEstudado">0 min</strong>
+                    <p>Tempo estudado</p>
+                </article>
+            </div>
+
+            <h3>Progresso geral</h3>
+            <div class="progresso">
+                <div id="barra"></div>
+            </div>
+            <p id="textoProgresso">0% concluído</p>
+
+            <h3>Calendário semanal</h3>
+            <div id="semana"></div>
+
+            <h4>Estudos do dia selecionados</h4>
+            <ul id="estudosDia"></ul>
+
+            <h3>Pomodoro</h3>
+            <div class="pomodor">
+                <div id="tempo">25:00</div>
+                <button id="btnIniciar">Iniciar</button>
+                <button id="btnPausar">Pausar</button>
+                <button id="btnReiniciar">Reinicar</button>
+            </div>
+
+            <h3>Atividades recentes</h3>
+            <ul id="atividades"></ul>
+        </section>
+
+        <section id="materias" class="tela" hidden>
+            <h2>Máterias</h2>
+            <form id="formMateria">
+                <label for="nomeMateria">Nome da Matéria</label>
+                <input id="nomeMateria" type="text" placeholder="Ex.:Matemática">
+                <p id="erroMateria" class="erro"></p>
+                <button type="submit">Cadastrar</button>
+            </form>
+
+            <ul id="listaMaterias"></ul>
+        </section>
+
+        <section id="conteudos" class="tela" hidden>
+            <h2>Conteúdos</h2>
+            <form id="formConteudo">
+                <label for="tituloConteudo">Título</label>
+                <input id="tituloConteudo" type="text">
+
+                <label for="materiaConteudo">Matéria</label>
+                <select id="materiaConteudo"></select>
+
+                <label for="prioridadeConteudo">Prioridade</label>
+                <select id="prioridadeConteudo">
+                    <option value="baixa">Baixa</option>
+                    <option value="media">Media</option>
+                    <option value="alta">Alta</option>
+                </select>
+
+                <label for="dataConteudo">Data de estudo</label>
+                <input id="dataConteudo" type="date">
+
+                <p id="erroConteudo" class="erro"></p>
+                <button type="submit">Cadastrar</button>
+            </form>
+
+            <h3>Filtros</h3>
+            <div class="filtros">
+                <select id="filtroMateria"></select>
+
+                <select id="filtroPrioridade">
+                    <option value="">Todas as prioridades</option>
+                    <option value="baixa">Baixa</option>
+                    <option value="media">Média</option>
+                    <option value="alta">Alta</option>
+                </select>
+
+                <select id="filtroStatus">
+                    <option value="">Todos os Status</option>
+                    <option value="pendente">Pendente</option>
+                    <option value="andamento">Em andamento</option>
+                    <option value="concluido">Concluido</option>
+                </select>
+
+                <input id="filtroData" type="date">
+            </div>
+
+            <ul id="listaConteudos"></ul>
+
+        </section>
+
+    </main>
+    <script type="module" src="js/main.js"></script>
+
+</body>
+</html>
