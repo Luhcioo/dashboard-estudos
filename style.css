@@ -1,0 +1,502 @@
+/* ---------- 1. VARIÁVEIS ---------- */
+:root {
+  /* paleta do grupo */
+  --verde-escuro: #4e5340;
+  --verde-medio: #697268;
+  --cinza-azulado: #95a3a4;
+  --azul-claro: #b7d1da;
+  --sage: #e2e8dd;
+
+  /* derivadas (necessárias para contraste e feedback) */
+  --superficie: #f4f7f1;
+  --cor-erro: #8f2a2a;
+  --cor-erro-fundo: #f3dcd9;
+  --cor-sucesso: #34592f;
+  --cor-sucesso-fundo: #d9e8d3;
+
+  /* semânticas */
+  --cor-fundo: var(--sage);
+  --cor-texto: var(--verde-escuro);
+  --cor-texto-suave: var(--verde-medio);
+  --cor-borda: var(--verde-medio);
+  --cor-foco: #1f4e5f;
+
+  /* tipografia */
+  --fonte: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+
+  /* espaçamentos e forma */
+  --espaco-1: 0.25rem;
+  --espaco-2: 0.5rem;
+  --espaco-3: 1rem;
+  --espaco-4: 1.5rem;
+  --espaco-5: 2rem;
+  --raio: 0.5rem;
+  --raio-grande: 0.875rem;
+  --alvo-toque: 2.75rem; /* ~44px */
+}
+
+
+/* ---------- 2. RESET ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+body, h1, h2, h3, h4, p, ul, figure { margin: 0; }
+
+ul { padding: 0; }
+
+img { max-width: 100%; display: block; }
+
+button, input, select, textarea { font: inherit; color: inherit; }
+
+[hidden] { display: none !important; }
+
+
+/* ---------- 3. BASE ---------- */
+body {
+  min-height: 100vh;
+  background: var(--cor-fundo);
+  color: var(--cor-texto);
+  font-family: var(--fonte);
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+h1, h2, h3, h4 { line-height: 1.2; }
+
+h2 { font-size: 1.75rem; font-weight: 700; }
+h3 { font-size: 1.2rem; font-weight: 700; }
+h4 { font-size: 1rem; font-weight: 600; color: var(--cor-texto-suave); }
+
+:focus-visible {
+  outline: 3px solid var(--cor-foco);
+  outline-offset: 2px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+
+/* ---------- 4. LAYOUT (mobile) ---------- */
+
+/* Menu: barra no topo no celular */
+nav {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--espaco-2);
+  padding: var(--espaco-3);
+  background: var(--verde-escuro);
+  color: var(--sage);
+}
+
+nav h1 {
+  flex: 1 0 100%;
+  font-size: 1.25rem;
+}
+
+nav button {
+  flex: 1 1 0;
+  min-height: var(--alvo-toque);
+  padding: var(--espaco-2) var(--espaco-3);
+  border: 1px solid transparent;
+  border-radius: var(--raio);
+  background: transparent;
+  color: var(--sage);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+nav button:hover { background: rgba(226, 232, 221, 0.15); }
+
+/* botão da tela atual (o JS adiciona .ativo e/ou aria-current="page") */
+nav button.ativo,
+nav button[aria-current="page"] {
+  background: var(--sage);
+  color: var(--verde-escuro);
+}
+
+main {
+  padding: var(--espaco-3);
+}
+
+.tela {
+  display: grid;
+  gap: var(--espaco-3);
+  max-width: 64rem;
+}
+
+.tela h3 { margin-top: var(--espaco-2); }
+
+
+/* ---------- 5. COMPONENTES ---------- */
+
+/* ----- Cards de estatísticas ----- */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--espaco-3);
+}
+
+.card {
+  padding: var(--espaco-3);
+  border-radius: var(--raio-grande);
+  background: var(--azul-claro);
+  color: var(--verde-escuro);
+}
+
+.card strong {
+  display: block;
+  font-size: 1.75rem;
+  line-height: 1.1;
+  overflow-wrap: anywhere;
+}
+
+.card p { color: var(--verde-escuro); font-size: 0.9rem; }
+
+/* ----- Barra de progresso ----- */
+.progresso {
+  height: 1rem;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--superficie);
+  border: 1px solid var(--cor-borda);
+}
+
+#barra {
+  width: 0;                 /* o JS define: barra.style.width = "40%" */
+  height: 100%;
+  background: var(--verde-escuro);
+  transition: width 0.3s ease;
+}
+
+#textoProgresso { color: var(--cor-texto-suave); font-size: 0.95rem; }
+
+/* ----- Calendário semanal ----- */
+#semana {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: var(--espaco-1);
+}
+
+/* botão de cada dia (criado pelo JS) */
+.dia {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--espaco-1);
+  min-height: var(--alvo-toque);
+  padding: var(--espaco-2) var(--espaco-1);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio);
+  background: var(--superficie);
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.dia:hover { background: var(--azul-claro); }
+
+.dia__nome { font-weight: 600; }
+.dia__num { font-size: 1.1rem; font-weight: 700; }
+
+.dia--hoje { border-width: 2px; }
+
+.dia--ativo,
+.dia[aria-pressed="true"] {
+  background: var(--verde-escuro);
+  border-color: var(--verde-escuro);
+  color: var(--sage);
+}
+
+/* pontinho: dia que tem estudo programado */
+.dia--com-estudo::after {
+  content: "";
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+/* ----- Pomodoro (o HTML usa a classe "pomodor") ----- */
+.pomodor,
+.pomodoro {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--espaco-2);
+  padding: var(--espaco-4) var(--espaco-3);
+  border-radius: var(--raio-grande);
+  background: var(--verde-escuro);
+  color: var(--sage);
+}
+
+#tempo {
+  flex: 1 0 100%;
+  text-align: center;
+  font-size: clamp(3rem, 18vw, 4.5rem);
+  font-weight: 700;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.pomodor button,
+.pomodoro button {
+  background: var(--sage);
+  color: var(--verde-escuro);
+}
+
+.pomodor button:hover,
+.pomodoro button:hover { background: var(--azul-claro); }
+
+/* ----- Listas (estudos do dia, atividades, matérias, conteúdos) ----- */
+main ul {
+  list-style: none;
+  display: grid;
+  gap: var(--espaco-2);
+}
+
+main ul > li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--espaco-2) var(--espaco-3);
+  padding: var(--espaco-3);
+  border: 1px solid var(--azul-claro);
+  border-left: 0.3rem solid var(--cinza-azulado);
+  border-radius: var(--raio);
+  background: var(--superficie);
+}
+
+/* partes do item (usar estas classes ao criar os <li> no JS) */
+.item__corpo { flex: 1 1 14rem; min-width: 0; }
+
+.item__titulo {
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.item__meta {
+  color: var(--cor-texto-suave);
+  font-size: 0.9rem;
+}
+
+.item__acoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--espaco-2);
+}
+
+/* mensagem de lista vazia */
+.vazio {
+  padding: var(--espaco-3);
+  border: 1px dashed var(--cor-borda);
+  border-radius: var(--raio);
+  color: var(--cor-texto-suave);
+  text-align: center;
+}
+
+/* ----- Selos (prioridade e status) ----- */
+.badge {
+  display: inline-block;
+  padding: 0.15rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.badge--alta  { background: var(--cor-erro-fundo); color: #6d1d1d; }
+.badge--media { background: #efe3c0; color: #5a4510; }
+.badge--baixa { background: #d5ddcf; color: var(--verde-escuro); }
+
+.badge--pendente  { background: var(--azul-claro); color: var(--verde-escuro); }
+.badge--andamento { background: var(--verde-medio); color: #fff; }
+.badge--concluido { background: var(--verde-escuro); color: var(--sage); }
+
+/* faixa lateral do item conforme a prioridade (classe no <li>) */
+main ul > li.item--alta  { border-left-color: var(--cor-erro); }
+main ul > li.item--media { border-left-color: #8a6a1f; }
+main ul > li.item--baixa { border-left-color: var(--verde-medio); }
+
+/* conteúdo concluído */
+main ul > li.item--concluido .item__titulo {
+  text-decoration: line-through;
+  color: var(--cor-texto-suave);
+}
+
+/* ----- Formulários ----- */
+form {
+  display: grid;
+  gap: var(--espaco-2);
+  max-width: 36rem;
+  padding: var(--espaco-4) var(--espaco-3);
+  border-radius: var(--raio-grande);
+  background: var(--superficie);
+}
+
+label { font-weight: 600; }
+
+input,
+select {
+  width: 100%;
+  min-height: var(--alvo-toque);
+  padding: var(--espaco-2) var(--espaco-3);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio);
+  background: #fff;
+  color-scheme: light;
+}
+
+input::placeholder { color: var(--cor-texto-suave); opacity: 1; }
+
+input:hover,
+select:hover { border-color: var(--verde-escuro); }
+
+/* campo com erro (o JS adiciona .campo--erro e aria-invalid="true") */
+input.campo--erro,
+select.campo--erro,
+input[aria-invalid="true"],
+select[aria-invalid="true"] {
+  border-color: var(--cor-erro);
+  border-width: 2px;
+}
+
+input.campo--ok,
+select.campo--ok { border-color: var(--cor-sucesso); }
+
+/* mensagens de erro e sucesso */
+.erro {
+  min-height: 1.5rem;
+  color: var(--cor-erro);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.erro:empty { display: none; }
+
+.sucesso {
+  padding: var(--espaco-2) var(--espaco-3);
+  border-radius: var(--raio);
+  background: var(--cor-sucesso-fundo);
+  color: var(--cor-sucesso);
+  font-weight: 600;
+}
+
+/* ----- Botões ----- */
+button {
+  min-height: var(--alvo-toque);
+  padding: var(--espaco-2) var(--espaco-4);
+  border: 1px solid transparent;
+  border-radius: var(--raio);
+  background: var(--verde-escuro);
+  color: var(--sage);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+button:hover { background: var(--verde-medio); color: #fff; }
+
+button:active { transform: translateY(1px); }
+
+button:disabled {
+  background: var(--cinza-azulado);
+  color: var(--verde-escuro);
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* secundário e perigoso (usar nas ações dos itens) */
+.botao--secundario {
+  background: transparent;
+  border-color: var(--verde-escuro);
+  color: var(--verde-escuro);
+}
+
+.botao--secundario:hover { background: var(--azul-claro); color: var(--verde-escuro); }
+
+.botao--perigo {
+  background: transparent;
+  border-color: var(--cor-erro);
+  color: var(--cor-erro);
+}
+
+.botao--perigo:hover { background: var(--cor-erro); color: #fff; }
+
+/* ----- Filtros ----- */
+.filtros {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--espaco-2);
+}
+
+
+/* ---------- 6. ESTADOS EXTRAS ---------- */
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; }
+}
+
+
+/* ---------- 7. RESPONSIVO ---------- */
+
+/* Tablet: a partir de 600px */
+@media (min-width: 600px) {
+  main { padding: var(--espaco-4); }
+
+  .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+  .filtros { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+  .dia { font-size: 0.9rem; }
+
+  nav button { flex: 0 1 auto; }
+}
+
+/* Desktop: a partir de 1024px — menu lateral */
+@media (min-width: 1024px) {
+  body {
+    display: grid;
+    grid-template-columns: 15rem minmax(0, 1fr);
+  }
+
+  nav {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    gap: var(--espaco-2);
+    padding: var(--espaco-4) var(--espaco-3);
+  }
+
+  nav h1 {
+    flex: 0 0 auto;
+    margin-bottom: var(--espaco-3);
+    font-size: 1.5rem;
+  }
+
+  nav button {
+    flex: 0 0 auto;
+    text-align: left;
+  }
+
+  main { padding: var(--espaco-5); }
+
+  .cards { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+  .filtros { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+  .dia { padding: var(--espaco-3) var(--espaco-2); }
+}
